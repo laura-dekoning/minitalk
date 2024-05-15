@@ -6,7 +6,7 @@
 #    By: lade-kon <lade-kon@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/05/15 19:29:55 by lade-kon      #+#    #+#                  #
-#    Updated: 2024/05/15 20:04:00 by lade-kon      ########   odam.nl          #
+#    Updated: 2024/05/15 20:41:19 by lade-kon      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,9 +33,9 @@ SRC_CLIENT		:=	$(addprefix $(SRC_DIR)/, $(SRC_FILE_CLIENT))
 
 OBJ_DIR			:=	obj
 OBJ_FILE_SERVER	:=	$(SRC_SERVER:.c=.o)
-OJB_FILE_CLIENT	:=	$(SRC_CLIENT:.c=.o)
-OBJ_SERVER		:=	$(addprefix $(OBJ_DIR)/, )
-OBJ_CLIENT		:=	$(addprefix $(OBJ_DIR)/, )
+OBJ_FILE_CLIENT	:=	$(SRC_CLIENT:.c=.o)
+OBJ_SERVER		:=	$(addprefix $(OBJ_DIR)/, $(OBJ_FILE_SERVER))
+OBJ_CLIENT		:=	$(addprefix $(OBJ_DIR)/, $(OBJ_FILE_CLIENT))
 
 all: $(SERVER) $(CLIENT)
 
@@ -49,8 +49,8 @@ $(SERVER): $(OBJ_SERVER) $(LIBFT_A)
 $(CLIENT): $(OBJ_CLIENT) $(LIBFT_A)
 	$(CC) $(CFLAGS) $(OBJ_CLIENT) $(INCLUDES) $(LIBFT_A) -o $(CLIENT)
 
-$(OBJ_DIR)/%.o: /%.c
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/$(SRC_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 norminette:
