@@ -6,7 +6,7 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:36 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/05/22 20:40:33 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/05/22 21:29:35 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ static void	handle_acknowledgement(int sig)
 {
 	(void)sig;
 	g_received = 1;
+	if (sig == SIGUSR1)
+		ft_putstr_fd("Received bit 0\n", STDOUT_FILENO);
+	if (sig == SIGUSR2)
+		ft_putstr_fd("Received bit 1\n", STDOUT_FILENO);
 }
 
 static void	send_string(char *str, int server_pid)
@@ -54,7 +58,6 @@ int	main(int argc, char **argv)
 	char				*str;
 	struct sigaction	sa;
 
-
 	if (argc != 3 || !ft_isnumber(argv[1]))
 		ft_puterror_fd("Format: ./client  <pid>  <message>", STDERR_FILENO);
 	server_pid = ft_atoi(argv[1]);
@@ -64,6 +67,7 @@ int	main(int argc, char **argv)
 	sa.sa_handler = handle_acknowledgement;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
+	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	send_string(str, server_pid);
 	return (0);

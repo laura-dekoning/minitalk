@@ -6,7 +6,7 @@
 #    By: lade-kon <lade-kon@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/05/15 19:29:55 by lade-kon      #+#    #+#                  #
-#    Updated: 2024/05/17 11:53:54 by lade-kon      ########   odam.nl          #
+#    Updated: 2024/05/22 22:04:22 by lade-kon      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,9 @@ norminette:
 
 update:
 	@git submodule update --init --recursive --remote
+
+main: $(LIBFT_A)
+	$(CC) $(CFLAGS) $(INCLUDES) main.c $(LIBFT) -o main
 
 clean:
 	@rm -rf $(OBJ_DIR)

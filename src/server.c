@@ -6,7 +6,7 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:14 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/05/22 20:49:48 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/05/22 21:23:12 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	handle_signal(int signum, siginfo_t *siginfo, void *context)
 	static int	sig_count = 0;
 	char		*result;
 
+	result = NULL;
 	if (signum == SIGUSR1)
 		sig_count++;
 	else if (signum == SIGUSR2)
@@ -27,9 +28,7 @@ static void	handle_signal(int signum, siginfo_t *siginfo, void *context)
 	}
 	if (sig_count == 8)
 	{
-		if (ft_strlcat() == 0)
-			ft_putstr_fd(result, STDOUT_FILENO);
-		write(1, &bit, 1);
+
 		bit = 0;
 		sig_count = 0;
 	}
