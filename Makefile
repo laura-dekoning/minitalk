@@ -6,7 +6,7 @@
 #    By: lade-kon <lade-kon@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/05/15 19:29:55 by lade-kon      #+#    #+#                  #
-#    Updated: 2024/05/15 20:41:19 by lade-kon      ########   odam.nl          #
+#    Updated: 2024/05/17 11:53:54 by lade-kon      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,3 +71,14 @@ fclean: clean
 	@make -C $(LIBFT_DIR) fclean > /dev/null
 
 re: fclean all
+
+## Colours ##
+RESET	:= \033[0m
+RED		:= \033[1;91m
+GREEN	:= \033[1;92m
+YELLOW	:= \033[1;93m
+BLUE	:= \033[1;94m
+PURPLE	:= \033[1;95m
+CYAN	:= \033[1;96m
+WHITE	:= \033[1;97m
+BLACK	:= \033[1;90m
