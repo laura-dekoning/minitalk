@@ -6,7 +6,7 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:36 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/05/22 21:29:35 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/05/22 22:36:25 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	handle_acknowledgement(int sig)
 	(void)sig;
 	g_received = 1;
 	if (sig == SIGUSR1)
-		ft_putstr_fd("Received bit 0\n", STDOUT_FILENO);
+		ft_putstr_fd("Message complete\n", STDOUT_FILENO);
 	if (sig == SIGUSR2)
-		ft_putstr_fd("Received bit 1\n", STDOUT_FILENO);
+		ft_putstr_fd("Received a bit\n", STDOUT_FILENO);
 }
 
 static void	send_string(char *str, int server_pid)
@@ -42,7 +42,7 @@ static void	send_string(char *str, int server_pid)
 			else
 				error = kill(server_pid, SIGUSR1);
 			if (error != 0)
-				ft_puterror_fd("Failed to send signal");
+				ft_puterror_fd("Failed to send signal", STDERR_FILENO);
 			while (!g_received)
 				pause();
 			g_received = 0;

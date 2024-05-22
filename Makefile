@@ -6,7 +6,7 @@
 #    By: lade-kon <lade-kon@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/05/15 19:29:55 by lade-kon      #+#    #+#                  #
-#    Updated: 2024/05/22 22:04:22 by lade-kon      ########   odam.nl          #
+#    Updated: 2024/05/22 22:19:46 by lade-kon      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,15 +27,20 @@ SRC_DIR			:=	src
 
 SRC_FILE_SERVER	:=	server.c
 SRC_FILE_CLIENT	:=	client.c
+SRC_FILE_MAIN	:=	main.c
 
 SRC_SERVER		:=	$(addprefix $(SRC_DIR)/, $(SRC_FILE_SERVER))
 SRC_CLIENT		:=	$(addprefix $(SRC_DIR)/, $(SRC_FILE_CLIENT))
+SRC_MAIN		:=	$(addprefix $(SRC_DIR)/, $(SRC_FILE_MAIN))
 
 OBJ_DIR			:=	obj
 OBJ_FILE_SERVER	:=	$(SRC_SERVER:.c=.o)
 OBJ_FILE_CLIENT	:=	$(SRC_CLIENT:.c=.o)
+OBJ_FILE_MAIN	:=	$(SRC_MAIN:.c=.o)
 OBJ_SERVER		:=	$(addprefix $(OBJ_DIR)/, $(OBJ_FILE_SERVER))
 OBJ_CLIENT		:=	$(addprefix $(OBJ_DIR)/, $(OBJ_FILE_CLIENT))
+OBJ_MAIN		:=	$(addprefix $(OBJ_DIR)/, $(OBJ_FILE_MAIN))
+
 
 all: $(SERVER) $(CLIENT)
 
@@ -49,6 +54,9 @@ $(SERVER): $(OBJ_SERVER) $(LIBFT_A)
 $(CLIENT): $(OBJ_CLIENT) $(LIBFT_A)
 	$(CC) $(CFLAGS) $(OBJ_CLIENT) $(INCLUDES) $(LIBFT_A) -o $(CLIENT)
 
+main: $(OBJ_MAIN) $(LIBFT_A)
+	$(CC) $(CFLAGS) $(OBJ_MAIN) $(INCLUDES) $(LIBFT_A) -o main
+
 $(OBJ_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)/$(SRC_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -60,9 +68,6 @@ norminette:
 
 update:
 	@git submodule update --init --recursive --remote
-
-main: $(LIBFT_A)
-	$(CC) $(CFLAGS) $(INCLUDES) main.c $(LIBFT) -o main
 
 clean:
 	@rm -rf $(OBJ_DIR)
