@@ -6,7 +6,7 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:14 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/05/24 15:04:56 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/05/24 15:46:36 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ char	*g_result = NULL;
 
 static void	print_string(siginfo_t *info)
 {
-		kill(info->si_pid, SIGUSR1);
-		ft_putstr_fd(g_result, STDOUT_FILENO);
-		free(g_result);
-		g_result = NULL;
+	kill(info->si_pid, SIGUSR1);
+	ft_putstr_fd(g_result, STDOUT_FILENO);
+	free(g_result);
+	g_result = NULL;
 }
 
 static void	handle_signal(int signum, siginfo_t *info, void *context)
