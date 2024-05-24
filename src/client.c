@@ -6,7 +6,7 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:36 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/05/22 22:36:25 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/05/24 14:51:51 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	handle_acknowledgement(int sig)
 	(void)sig;
 	g_received = 1;
 	if (sig == SIGUSR1)
-		ft_putstr_fd("Message complete\n", STDOUT_FILENO);
+		ft_putstr_fd("Message succesfully received\n", STDOUT_FILENO);
 	if (sig == SIGUSR2)
 		ft_putstr_fd("Received a bit\n", STDOUT_FILENO);
 }
@@ -32,7 +32,7 @@ static void	send_string(char *str, int server_pid)
 
 	i = 0;
 	error = 0;
-	while (str[i])
+	while (1)
 	{
 		b = 0;
 		while (b < 8)
@@ -49,6 +49,8 @@ static void	send_string(char *str, int server_pid)
 			b++;
 		}
 		i++;
+		if (str[i - 1] == '\0')
+			break ;
 	}
 }
 
@@ -64,9 +66,9 @@ int	main(int argc, char **argv)
 	if (server_pid <= 0)
 		ft_puterror_fd("Invalid PID", STDERR_FILENO);
 	str = argv[2];
-	sa.sa_handler = handle_acknowledgement;
-	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = handle_acknowledgement;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	send_string(str, server_pid);

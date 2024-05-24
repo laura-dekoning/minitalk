@@ -6,27 +6,27 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:14 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/05/22 22:38:39 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/05/24 15:04:56 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	print_string(char *str, siginfo_t *info)
+char	*g_result = NULL;
+
+static void	print_string(siginfo_t *info)
 {
 		kill(info->si_pid, SIGUSR1);
-		ft_putendl_fd(str, STDOUT_FILENO);
-		free(str);
-		str = NULL;
+		ft_putstr_fd(g_result, STDOUT_FILENO);
+		free(g_result);
+		g_result = NULL;
 }
 
 static void	handle_signal(int signum, siginfo_t *info, void *context)
 {
 	static char	bit = 0;
 	static int	sig_count = 0;
-	char		*result;
 
-	result = NULL;
 	(void)context;
 	if (signum == SIGUSR1)
 		sig_count++;
@@ -36,13 +36,11 @@ static void	handle_signal(int signum, siginfo_t *info, void *context)
 		sig_count++;
 	}
 	kill(info->si_pid, SIGUSR2);
-	printf("[%c]\n", bit);
 	if (sig_count == 8)
 	{
-		result = ft_appchar(result, bit);
-		ft_printf("[%s]\n", result);
+		g_result = ft_appchar(g_result, bit);
 		if (bit == '\0')
-			print_string(result, info);
+			print_string(info);
 		bit = 0;
 		sig_count = 0;
 	}
@@ -53,6 +51,7 @@ int	main(void)
 	pid_t				server_pid;
 	struct sigaction	sa;
 
+	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO | SA_NODEFER;
 	sa.sa_sigaction = handle_signal;
 	server_pid = getpid();

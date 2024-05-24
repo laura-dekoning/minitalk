@@ -6,7 +6,7 @@
 #    By: lade-kon <lade-kon@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/05/15 19:29:55 by lade-kon      #+#    #+#                  #
-#    Updated: 2024/05/22 22:19:46 by lade-kon      ########   odam.nl          #
+#    Updated: 2024/05/24 14:19:10 by lade-kon      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ main: $(OBJ_MAIN) $(LIBFT_A)
 	$(CC) $(CFLAGS) $(OBJ_MAIN) $(INCLUDES) $(LIBFT_A) -o main
 
 $(OBJ_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)/$(SRC_DIR)
+	mkdir -p $(OBJ_DIR)/$(SRC_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 norminette:
