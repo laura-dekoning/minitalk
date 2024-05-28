@@ -6,7 +6,7 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:36 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/05/24 14:51:51 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/05/28 16:28:53 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,15 @@ int	g_received = 0;
 static void	handle_acknowledgement(int sig)
 {
 	(void)sig;
+	static unsigned int i = 0;
 	g_received = 1;
 	if (sig == SIGUSR1)
 		ft_putstr_fd("Message succesfully received\n", STDOUT_FILENO);
 	if (sig == SIGUSR2)
-		ft_putstr_fd("Received a bit\n", STDOUT_FILENO);
+		ft_printf("Bit %i has been received!\n", i);
+	i++;
 }
+
 
 static void	send_string(char *str, int server_pid)
 {
@@ -51,6 +54,8 @@ static void	send_string(char *str, int server_pid)
 		i++;
 		if (str[i - 1] == '\0')
 			break ;
+			//fix deze shit!. Stuur nog '\0' character op het laatst. 
+			//maak send_char functie. 
 	}
 }
 

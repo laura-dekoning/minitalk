@@ -6,21 +6,13 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:14 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/05/24 17:06:33 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/05/28 15:44:41 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-char	*g_result = NULL;
-
-static void	print_string(siginfo_t *info)
-{
-	kill(info->si_pid, SIGUSR1);
-	ft_putstr_fd(g_result, STDOUT_FILENO);
-	free(g_result);
-	g_result = NULL;
-}
+t_vec	g_string;
 
 static void	handle_signal(int signum, siginfo_t *info, void *context)
 {
@@ -35,15 +27,18 @@ static void	handle_signal(int signum, siginfo_t *info, void *context)
 		bit = bit | (1 << sig_count);
 		sig_count++;
 	}
-	kill(info->si_pid, SIGUSR2);
 	if (sig_count == 8)
 	{
-		g_result = ft_appchar(g_result, bit);
-		if (bit == '\0')
-			print_string(info);
+		vec_push(&g_string, bit);
+		if (bit == '\0') {
+			vec_print(&g_string);
+			ft_printf("\n\nNew message:\n\n");
+		}
 		bit = 0;
 		sig_count = 0;
 	}
+	usleep(10);
+	kill(info->si_pid, SIGUSR2);
 }
 
 int	main(void)
@@ -51,6 +46,8 @@ int	main(void)
 	pid_t				server_pid;
 	struct sigaction	sa;
 
+	if (!vec_init(&g_string, 100))
+		ft_puterror_fd("Vector initialisation failed!", STDERR_FILENO);
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO | SA_NODEFER;
 	sa.sa_sigaction = handle_signal;
