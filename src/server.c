@@ -6,7 +6,7 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:14 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/05/28 15:44:41 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/06/05 12:47:06 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ static void	handle_signal(int signum, siginfo_t *info, void *context)
 	if (sig_count == 8)
 	{
 		vec_push(&g_string, bit);
-		if (bit == '\0') {
+		if (bit == '\0')
 			vec_print(&g_string);
-			ft_printf("\n\nNew message:\n\n");
-		}
 		bit = 0;
 		sig_count = 0;
 	}
