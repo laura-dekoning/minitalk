@@ -6,7 +6,7 @@
 /*   By: lade-kon <lade-kon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/15 19:29:36 by lade-kon      #+#    #+#                 */
-/*   Updated: 2024/06/05 13:05:09 by lade-kon      ########   odam.nl         */
+/*   Updated: 2024/06/05 16:38:28 by lade-kon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,36 +27,45 @@ static void	handle_acknowledgement(int sig)
 	i++;
 }
 
+static void	send_bit(char c, int b, int server_pid)
+{
+	int	error;
+
+	error = 0;
+	if (c & (1 << b))
+		error = kill(server_pid, SIGUSR2);
+	else
+		error = kill(server_pid, SIGUSR1);
+	if (error != 0)
+		ft_puterror_fd("Failed to send signal", STDERR_FILENO);
+	while (!g_received)
+		pause();
+	g_received = 0;
+}
+
+static void	send_char(char c, int server_pid)
+{
+	int	b;
+
+	b = 0;
+	while (b < 8)
+	{
+		send_bit(c, b, server_pid);
+		b++;
+	}
+}
+
 static void	send_string(char *str, int server_pid)
 {
 	int	i;
-	int	b;
-	int	error;
 
 	i = 0;
-	error = 0;
-	while (1)
+	while (str[i])
 	{
-		b = 0;
-		while (b < 8)
-		{
-			if (str[i] & (1 << b))
-				error = kill(server_pid, SIGUSR2);
-			else
-				error = kill(server_pid, SIGUSR1);
-			if (error != 0)
-				ft_puterror_fd("Failed to send signal", STDERR_FILENO);
-			while (!g_received)
-				pause();
-			g_received = 0;
-			b++;
-		}
+		send_char(str[i], server_pid);
 		i++;
-		if (str[i - 1] == '\0')
-			break ;
-			//fix deze shit!. Stuur nog '\0' character op het laatst. 
-			//maak send_char functie. 
 	}
+	send_char(str[i], server_pid);
 }
 
 int	main(int argc, char **argv)
